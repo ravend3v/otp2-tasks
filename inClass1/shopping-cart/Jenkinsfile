@@ -84,12 +84,10 @@ pipeline {
             // Use ReportGenerator (dotnet tool) to convert cobertura xml to an HTML report
             if (isUnix()) {
               sh 'dotnet tool restore || true'
--              sh 'dotnet tool run dotnet-reportgenerator-globaltool -reports:tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
-+              sh 'dotnet tool run reportgenerator -reports:tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
+              sh 'dotnet tool run reportgenerator -reports:tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
             } else {
               bat 'dotnet tool restore || echo tool restore failed'
--              bat 'dotnet tool run dotnet-reportgenerator-globaltool -reports:tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
-+              bat 'dotnet tool run reportgenerator -reports:tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
+              bat 'dotnet tool run reportgenerator -reports:tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
             }
           }
         }

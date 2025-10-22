@@ -118,7 +118,9 @@ pipeline {
                   dir reports\\ShoppingCart.Tests
                 ) else (
                   echo No coverage.xml found in reports\\ShoppingCart.Tests, skipping report generation
-                )'''
+                )
+              '''
+            }
           }
         }
       }

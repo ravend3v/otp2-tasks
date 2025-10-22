@@ -52,10 +52,12 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
+            // Run tests and collect coverage using Coverlet (via built-in data collector)
+            // Output TRX into tests/**/TestResults and coverage in cobertura format.
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --no-build --verbosity minimal'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --no-build --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --no-build --verbosity minimal'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --no-build --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml'
             }
           }
         }
@@ -74,6 +76,23 @@ pipeline {
         }
       }
     }
+    
+    stage('Generate Coverage Report') {
+      steps {
+        dir("${env.PROJECT_DIR}") {
+          script {
+            // Use ReportGenerator (dotnet tool) to convert cobertura xml to an HTML report
+            if (isUnix()) {
+              sh 'dotnet tool restore || true'
+              sh 'dotnet tool run dotnet-reportgenerator-globaltool -reports:tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
+            } else {
+              bat 'dotnet tool restore || echo tool restore failed'
+              bat 'dotnet tool run dotnet-reportgenerator-globaltool -reports:tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
+            }
+          }
+        }
+      }
+    }
   }
 
   post {
@@ -81,6 +100,8 @@ pipeline {
       dir("${env.PROJECT_DIR}") {
         archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
         archiveArtifacts artifacts: 'tests/**/TestResults.trx', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'tests/**/TestResults/coverage.cobertura.xml', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'tests/**/TestResults/CoverageReport/**', allowEmptyArchive: true
         junit allowEmptyResults: true, testResults: 'tests/**/TestResults.trx'
       }
     }

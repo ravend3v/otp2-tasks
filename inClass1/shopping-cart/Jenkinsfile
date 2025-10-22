@@ -68,9 +68,11 @@ pipeline {
             }
             // Run tests and produce TRX + OpenCover coverage XML
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports/ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=reports/ShoppingCart.Tests/coverage.xml'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports/ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../reports/ShoppingCart.Tests/coverage.xml'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports\\ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=reports\\ShoppingCart.Tests\\coverage.xml'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports\\ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=..\\..\\reports\\ShoppingCart.Tests\\coverage.xml'
+              // Debug: Show what files were actually created
+              bat 'echo "Files after test run:" & dir reports\\ShoppingCart.Tests'
             }
           }
         }
@@ -113,7 +115,7 @@ pipeline {
               bat '''
                 if exist reports\\ShoppingCart.Tests\\coverage.xml (
                   dotnet tool restore || echo tool restore failed
-                  dotnet tool run reportgenerator -reports:reports\\ShoppingCart.Tests\\coverage*.xml -targetdir:reports\\ShoppingCart.Tests -reporttypes:Html;Clover
+                  dotnet tool run reportgenerator -reports:reports\\ShoppingCart.Tests\\coverage*.xml -targetdir:reports\\ShoppingCart.Tests -reporttypes:"Html;Clover"
                   echo ReportGenerator output:
                   dir reports\\ShoppingCart.Tests
                 ) else (

@@ -1,62 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="cbb28665-6bb5-4d88-97ab-ab6d81d86793" name="elkku@VICTUS 2025-10-22 22:32:27" runUser="VICTUS\elkku" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Times creation="2025-10-22T22:32:27.3048254+03:00" queuing="2025-10-22T22:32:27.3048259+03:00" start="2025-10-22T22:32:26.0836697+03:00" finish="2025-10-22T22:32:27.3103756+03:00" />
-  <TestSettings name="default" id="4c84d237-b51c-45ac-a6be-b03c2ce3a8e9">
-    <Deployment runDeploymentRoot="elkku_VICTUS_2025-10-22_22_32_27" />
+<TestRun id="38f9d2f7-ee2a-40a4-93f4-c172f1b01aab" name="elkku@VICTUS 2025-10-22 23:00:17" runUser="VICTUS\elkku" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-10-22T23:00:17.9058983+03:00" queuing="2025-10-22T23:00:17.9058994+03:00" start="2025-10-22T23:00:16.5908213+03:00" finish="2025-10-22T23:00:17.9127985+03:00" />
+  <TestSettings name="default" id="5c5df2b0-d153-437a-be8d-2c0285212e5c">
+    <Deployment runDeploymentRoot="elkku_VICTUS_2025-10-22_23_00_17" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="8a19b47f-6290-490d-9002-e8207f61035f" testId="1c3c2195-93a9-9e9f-78fa-439b73134daa" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_NegativeValues_IncludedInSum" computerName="VICTUS" duration="00:00:00.0002173" startTime="2025-10-22T22:32:27.0869695+03:00" endTime="2025-10-22T22:32:27.0869695+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a19b47f-6290-490d-9002-e8207f61035f" />
-    <UnitTestResult executionId="587664c3-f872-46c7-a4db-867aa495a440" testId="d984b7c4-b753-4d04-d364-4c0abeb664fd" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 0, qty: 0, expected: 0)" computerName="VICTUS" duration="00:00:00.0000240" startTime="2025-10-22T22:32:27.0871067+03:00" endTime="2025-10-22T22:32:27.0871077+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="587664c3-f872-46c7-a4db-867aa495a440" />
-    <UnitTestResult executionId="ff06a4ff-32b4-46ff-b9c5-84cf1e5a2506" testId="b6ae1eaa-ee8e-0676-5f88-ffd977c4ee4b" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_EmptyList_ReturnsZero" computerName="VICTUS" duration="00:00:00.0007573" startTime="2025-10-22T22:32:27.0862135+03:00" endTime="2025-10-22T22:32:27.0862136+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ff06a4ff-32b4-46ff-b9c5-84cf1e5a2506" />
-    <UnitTestResult executionId="92de504e-3839-4073-b3fb-31e98d5a102d" testId="d0f8a5e7-a88d-0be8-ac17-1499c73d48fb" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 0, qty: 5, expected: 0)" computerName="VICTUS" duration="00:00:00.0001660" startTime="2025-10-22T22:32:27.0870327+03:00" endTime="2025-10-22T22:32:27.0870329+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="92de504e-3839-4073-b3fb-31e98d5a102d" />
-    <UnitTestResult executionId="c75d084c-8a34-4fba-bb6e-eae42b97e539" testId="30243816-95cb-e825-f737-660b31b70511" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 5, qty: 0, expected: 0)" computerName="VICTUS" duration="00:00:00.0007339" startTime="2025-10-22T22:32:27.0870795+03:00" endTime="2025-10-22T22:32:27.0870795+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c75d084c-8a34-4fba-bb6e-eae42b97e539" />
-    <UnitTestResult executionId="b3beba6f-b1ef-4565-ad5e-6133e0d92028" testId="2ac53ca2-1274-1bbe-2cb5-954ccd617b4d" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ReturnsSumOfPriceTimesQuantity" computerName="VICTUS" duration="00:00:00.0003211" startTime="2025-10-22T22:32:27.0868254+03:00" endTime="2025-10-22T22:32:27.0868255+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b3beba6f-b1ef-4565-ad5e-6133e0d92028" />
-    <UnitTestResult executionId="3e7bd747-dae5-4e34-83d7-01c96ae4cef0" testId="b987193a-fd52-ddc4-ca7f-d5ef21343467" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_SingleItem_CalculatesCorrectly" computerName="VICTUS" duration="00:00:00.0261915" startTime="2025-10-22T22:32:27.0796458+03:00" endTime="2025-10-22T22:32:27.0796815+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3e7bd747-dae5-4e34-83d7-01c96ae4cef0" />
-    <UnitTestResult executionId="e996b722-ceaa-4383-bfe9-26e8d3e4bab2" testId="36638334-bbc6-c475-7b17-43fa87698e70" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_Precision_IsPreserved" computerName="VICTUS" duration="00:00:00.0003687" startTime="2025-10-22T22:32:27.0871423+03:00" endTime="2025-10-22T22:32:27.0871424+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e996b722-ceaa-4383-bfe9-26e8d3e4bab2" />
+    <UnitTestResult executionId="3386d15f-5021-4797-8b5d-24131675ad75" testId="2ac53ca2-1274-1bbe-2cb5-954ccd617b4d" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ReturnsSumOfPriceTimesQuantity" computerName="VICTUS" duration="00:00:00.0001459" startTime="2025-10-22T23:00:17.7352578+03:00" endTime="2025-10-22T23:00:17.7352579+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3386d15f-5021-4797-8b5d-24131675ad75" />
+    <UnitTestResult executionId="b1cf2095-367f-4e08-957c-c99cc54cd3ca" testId="d984b7c4-b753-4d04-d364-4c0abeb664fd" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 0, qty: 0, expected: 0)" computerName="VICTUS" duration="00:00:00.0000061" startTime="2025-10-22T23:00:17.7354416+03:00" endTime="2025-10-22T23:00:17.7354416+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b1cf2095-367f-4e08-957c-c99cc54cd3ca" />
+    <UnitTestResult executionId="53e487b3-0237-490f-84e8-a5de347b9c37" testId="30243816-95cb-e825-f737-660b31b70511" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 5, qty: 0, expected: 0)" computerName="VICTUS" duration="00:00:00.0002982" startTime="2025-10-22T23:00:17.7354169+03:00" endTime="2025-10-22T23:00:17.7354170+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53e487b3-0237-490f-84e8-a5de347b9c37" />
+    <UnitTestResult executionId="8dcdacdc-84d9-45c2-b647-93ba267a7d84" testId="36638334-bbc6-c475-7b17-43fa87698e70" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_Precision_IsPreserved" computerName="VICTUS" duration="00:00:00.0001240" startTime="2025-10-22T23:00:17.7354718+03:00" endTime="2025-10-22T23:00:17.7354718+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8dcdacdc-84d9-45c2-b647-93ba267a7d84" />
+    <UnitTestResult executionId="62373f50-585e-42a3-90eb-5cd62f40a92b" testId="1c3c2195-93a9-9e9f-78fa-439b73134daa" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_NegativeValues_IncludedInSum" computerName="VICTUS" duration="00:00:00.0000913" startTime="2025-10-22T23:00:17.7353157+03:00" endTime="2025-10-22T23:00:17.7353157+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62373f50-585e-42a3-90eb-5cd62f40a92b" />
+    <UnitTestResult executionId="de0f8c31-5d08-4e54-a9db-5d9df493e20e" testId="b987193a-fd52-ddc4-ca7f-d5ef21343467" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_SingleItem_CalculatesCorrectly" computerName="VICTUS" duration="00:00:00.0267445" startTime="2025-10-22T23:00:17.7307585+03:00" endTime="2025-10-22T23:00:17.7307732+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="de0f8c31-5d08-4e54-a9db-5d9df493e20e" />
+    <UnitTestResult executionId="050a44d8-29e8-45cf-a8f8-91a11ddabe43" testId="d0f8a5e7-a88d-0be8-ac17-1499c73d48fb" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 0, qty: 5, expected: 0)" computerName="VICTUS" duration="00:00:00.0001574" startTime="2025-10-22T23:00:17.7353674+03:00" endTime="2025-10-22T23:00:17.7353675+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="050a44d8-29e8-45cf-a8f8-91a11ddabe43" />
+    <UnitTestResult executionId="a5328229-10fc-4165-8ec4-059b8f802032" testId="b6ae1eaa-ee8e-0676-5f88-ffd977c4ee4b" testName="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_EmptyList_ReturnsZero" computerName="VICTUS" duration="00:00:00.0002361" startTime="2025-10-22T23:00:17.7342359+03:00" endTime="2025-10-22T23:00:17.7342361+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a5328229-10fc-4165-8ec4-059b8f802032" />
   </Results>
   <TestDefinitions>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_EmptyList_ReturnsZero" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="b6ae1eaa-ee8e-0676-5f88-ffd977c4ee4b">
-      <Execution id="ff06a4ff-32b4-46ff-b9c5-84cf1e5a2506" />
+      <Execution id="a5328229-10fc-4165-8ec4-059b8f802032" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_EmptyList_ReturnsZero" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 0, qty: 0, expected: 0)" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="d984b7c4-b753-4d04-d364-4c0abeb664fd">
-      <Execution id="587664c3-f872-46c7-a4db-867aa495a440" />
+      <Execution id="b1cf2095-367f-4e08-957c-c99cc54cd3ca" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_ZeroPriceOrQuantity_ReturnsZero" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 5, qty: 0, expected: 0)" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="30243816-95cb-e825-f737-660b31b70511">
-      <Execution id="c75d084c-8a34-4fba-bb6e-eae42b97e539" />
+      <Execution id="53e487b3-0237-490f-84e8-a5de347b9c37" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_ZeroPriceOrQuantity_ReturnsZero" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ZeroPriceOrQuantity_ReturnsZero(price: 0, qty: 5, expected: 0)" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="d0f8a5e7-a88d-0be8-ac17-1499c73d48fb">
-      <Execution id="92de504e-3839-4073-b3fb-31e98d5a102d" />
+      <Execution id="050a44d8-29e8-45cf-a8f8-91a11ddabe43" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_ZeroPriceOrQuantity_ReturnsZero" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_Precision_IsPreserved" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="36638334-bbc6-c475-7b17-43fa87698e70">
-      <Execution id="e996b722-ceaa-4383-bfe9-26e8d3e4bab2" />
+      <Execution id="8dcdacdc-84d9-45c2-b647-93ba267a7d84" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_Precision_IsPreserved" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_ReturnsSumOfPriceTimesQuantity" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="2ac53ca2-1274-1bbe-2cb5-954ccd617b4d">
-      <Execution id="b3beba6f-b1ef-4565-ad5e-6133e0d92028" />
+      <Execution id="3386d15f-5021-4797-8b5d-24131675ad75" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_ReturnsSumOfPriceTimesQuantity" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_SingleItem_CalculatesCorrectly" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="b987193a-fd52-ddc4-ca7f-d5ef21343467">
-      <Execution id="3e7bd747-dae5-4e34-83d7-01c96ae4cef0" />
+      <Execution id="de0f8c31-5d08-4e54-a9db-5d9df493e20e" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_SingleItem_CalculatesCorrectly" />
     </UnitTest>
     <UnitTest name="ShoppingCart.Tests.PricingServiceTests.CalculateTotal_NegativeValues_IncludedInSum" storage="c:\users\elkku\otp2-tasks\inclass1\shopping-cart\tests\shoppingcart.tests\bin\debug\net9.0\shoppingcart.tests.dll" id="1c3c2195-93a9-9e9f-78fa-439b73134daa">
-      <Execution id="8a19b47f-6290-490d-9002-e8207f61035f" />
+      <Execution id="62373f50-585e-42a3-90eb-5cd62f40a92b" />
       <TestMethod codeBase="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\tests\ShoppingCart.Tests\bin\Debug\net9.0\ShoppingCart.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="ShoppingCart.Tests.PricingServiceTests" name="CalculateTotal_NegativeValues_IncludedInSum" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
-    <TestEntry testId="1c3c2195-93a9-9e9f-78fa-439b73134daa" executionId="8a19b47f-6290-490d-9002-e8207f61035f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="d984b7c4-b753-4d04-d364-4c0abeb664fd" executionId="587664c3-f872-46c7-a4db-867aa495a440" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="b6ae1eaa-ee8e-0676-5f88-ffd977c4ee4b" executionId="ff06a4ff-32b4-46ff-b9c5-84cf1e5a2506" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="d0f8a5e7-a88d-0be8-ac17-1499c73d48fb" executionId="92de504e-3839-4073-b3fb-31e98d5a102d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="30243816-95cb-e825-f737-660b31b70511" executionId="c75d084c-8a34-4fba-bb6e-eae42b97e539" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="2ac53ca2-1274-1bbe-2cb5-954ccd617b4d" executionId="b3beba6f-b1ef-4565-ad5e-6133e0d92028" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="b987193a-fd52-ddc4-ca7f-d5ef21343467" executionId="3e7bd747-dae5-4e34-83d7-01c96ae4cef0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="36638334-bbc6-c475-7b17-43fa87698e70" executionId="e996b722-ceaa-4383-bfe9-26e8d3e4bab2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2ac53ca2-1274-1bbe-2cb5-954ccd617b4d" executionId="3386d15f-5021-4797-8b5d-24131675ad75" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d984b7c4-b753-4d04-d364-4c0abeb664fd" executionId="b1cf2095-367f-4e08-957c-c99cc54cd3ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="30243816-95cb-e825-f737-660b31b70511" executionId="53e487b3-0237-490f-84e8-a5de347b9c37" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="36638334-bbc6-c475-7b17-43fa87698e70" executionId="8dcdacdc-84d9-45c2-b647-93ba267a7d84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1c3c2195-93a9-9e9f-78fa-439b73134daa" executionId="62373f50-585e-42a3-90eb-5cd62f40a92b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b987193a-fd52-ddc4-ca7f-d5ef21343467" executionId="de0f8c31-5d08-4e54-a9db-5d9df493e20e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d0f8a5e7-a88d-0be8-ac17-1499c73d48fb" executionId="050a44d8-29e8-45cf-a8f8-91a11ddabe43" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b6ae1eaa-ee8e-0676-5f88-ffd977c4ee4b" executionId="a5328229-10fc-4165-8ec4-059b8f802032" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestEntries>
   <TestLists>
     <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
@@ -66,10 +66,10 @@
     <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
     <Output>
       <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.5.3.1+6b60a9e56a (64-bit .NET 9.0.8)&#xD;
-[xUnit.net 00:00:00.10]   Discovering: ShoppingCart.Tests&#xD;
-[xUnit.net 00:00:00.19]   Discovered:  ShoppingCart.Tests&#xD;
-[xUnit.net 00:00:00.20]   Starting:    ShoppingCart.Tests&#xD;
-[xUnit.net 00:00:00.34]   Finished:    ShoppingCart.Tests&#xD;
+[xUnit.net 00:00:00.16]   Discovering: ShoppingCart.Tests&#xD;
+[xUnit.net 00:00:00.35]   Discovered:  ShoppingCart.Tests&#xD;
+[xUnit.net 00:00:00.36]   Starting:    ShoppingCart.Tests&#xD;
+[xUnit.net 00:00:00.48]   Finished:    ShoppingCart.Tests&#xD;
 </StdOut>
     </Output>
   </ResultSummary>

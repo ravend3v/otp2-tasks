@@ -2,9 +2,9 @@
 <CoverageSession>
   <Summary numSequencePoints="62" visitedSequencePoints="6" numBranchPoints="36" visitedBranchPoints="2" sequenceCoverage="9.67" branchCoverage="5.55" maxCyclomaticComplexity="38" minCyclomaticComplexity="38" visitedClasses="1" numClasses="3" visitedMethods="1" numMethods="5" />
   <Modules>
-    <Module hash="84524F88-0BB6-4E72-BD1E-BE22481ADE9F">
+    <Module hash="1A1F03FE-AF62-4409-85EC-523C4673066E">
       <ModulePath>shopping-cart.dll</ModulePath>
-      <ModuleTime>2025-10-22T07.32.27</ModuleTime>
+      <ModuleTime>2025-10-22T08.00.18</ModuleTime>
       <ModuleName>shopping-cart</ModuleName>
       <Files>
         <File uid="1" fullPath="C:\Users\elkku\otp2-tasks\inClass1\shopping-cart\src\Program.cs" />

@@ -1,1 +1,11 @@
 /screenshots/
+
+# Ignore generated test coverage/report outputs
+/tests/ShoppingCart.Tests/TestResults/Report/
+
+# Optional: keep common build artifacts ignored
+/bin/
+/obj/
+/src/**/bin/
+/src/**/obj/
+/.vs/

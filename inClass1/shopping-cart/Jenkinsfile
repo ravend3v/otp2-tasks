@@ -52,6 +52,14 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
+            // Ensure old test results are removed so xUnit only sees fresh files
+            if (isUnix()) {
+              sh 'rm -rf tests/ShoppingCart.Tests/TestResults || true'
+              sh 'mkdir -p tests/ShoppingCart.Tests/TestResults || true'
+            } else {
+              bat 'if exist tests\\ShoppingCart.Tests\\TestResults rmdir /s /q tests\\ShoppingCart.Tests\\TestResults || echo No old TestResults'
+              bat 'mkdir tests\\ShoppingCart.Tests\\TestResults || echo TestResults directory exists'
+            }
             // Run tests and collect coverage using Coverlet (via built-in data collector)
             // Output TRX into tests/**/TestResults and coverage in cobertura format.
             if (isUnix()) {

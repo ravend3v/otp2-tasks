@@ -55,9 +55,9 @@ pipeline {
             // Run tests and collect coverage using Coverlet (via built-in data collector)
             // Output TRX into tests/**/TestResults and coverage in cobertura format.
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\'
             }
           }
         }
@@ -84,10 +84,10 @@ pipeline {
             // Use ReportGenerator (dotnet tool) to convert cobertura xml to an HTML report
             if (isUnix()) {
               sh 'dotnet tool restore || true'
-              sh 'dotnet tool run reportgenerator -reports:tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
+                    sh 'dotnet tool run reportgenerator -reports:tests/**/TestResults/**/coverage*.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
             } else {
               bat 'dotnet tool restore || echo tool restore failed'
-              bat 'dotnet tool run reportgenerator -reports:tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
+                    bat 'dotnet tool run reportgenerator -reports:tests\\**\\TestResults\\**\\coverage*.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
             }
           }
         }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LanguageHeader"><value>Choose a language / Valitse kieli / Välj språk / 言語を選択</value></data>
+  <data name="LanguageOptions"><value>1) English
+2) Finnish
+3) Swedish
+4) Japanese</value></data>
+  <data name="ChooseLanguage"><value>Select language (1-4): </value></data>
+  <data name="EnterPrice"><value>Enter item price (blank to finish): </value></data>
+  <data name="EnterQuantity"><value>Enter quantity for this item: </value></data>
+  <data name="AddAnother"><value>Add another item? (y/n): </value></data>
+  <data name="InvalidNumber"><value>Invalid number, try again.</value></data>
+  <data name="Total"><value>Total cost: {0}</value></data>
+  <data name="Goodbye"><value>Press Enter to exit.</value></data>
+</root>

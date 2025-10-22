@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LanguageHeader"><value>言語を選択 / Choose a language / Valitse kieli / Välj språk</value></data>
+  <data name="LanguageOptions"><value>1) English
+2) フィンランド語
+3) スウェーデン語
+4) 日本語</value></data>
+  <data name="ChooseLanguage"><value>言語を選択してください（1-4）: </value></data>
+  <data name="EnterPrice"><value>商品の価格を入力してください（空で終了）: </value></data>
+  <data name="EnterQuantity"><value>この商品の数量を入力してください: </value></data>
+  <data name="AddAnother"><value>別の商品を追加しますか？ (y/n): </value></data>
+  <data name="InvalidNumber"><value>無効な数値です。もう一度お試しください。</value></data>
+  <data name="Total"><value>合計金額: {0}</value></data>
+  <data name="Goodbye"><value>Enterキーで終了します。</value></data>
+</root>

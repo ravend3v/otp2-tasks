@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="LanguageHeader"><value>Välj språk / Choose a language / Valitse kieli / 言語を選択</value></data>
+  <data name="LanguageOptions"><value>1) English
+2) Finska
+3) Svenska
+4) 日本語</value></data>
+  <data name="ChooseLanguage"><value>Välj språk (1-4): </value></data>
+  <data name="EnterPrice"><value>Ange artikelns pris (tomt för att avsluta): </value></data>
+  <data name="EnterQuantity"><value>Ange antal för denna artikel: </value></data>
+  <data name="AddAnother"><value>Lägg till en annan artikel? (j/n): </value></data>
+  <data name="InvalidNumber"><value>Ogiltigt tal, försök igen.</value></data>
+  <data name="Total"><value>Totalkostnad: {0}</value></data>
+  <data name="Goodbye"><value>Tryck Enter för att avsluta.</value></data>
+</root>

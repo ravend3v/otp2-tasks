@@ -55,9 +55,9 @@ pipeline {
             // Run tests and collect coverage using Coverlet (via built-in data collector)
             // Output TRX into tests/**/TestResults and coverage in cobertura format.
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.xml'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.xml'
             }
           }
         }
@@ -84,10 +84,10 @@ pipeline {
             // Use ReportGenerator (dotnet tool) to convert cobertura xml to an HTML report
             if (isUnix()) {
               sh 'dotnet tool restore || true'
-                    sh 'dotnet tool run reportgenerator -reports:tests/**/TestResults/**/coverage*.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
+              sh 'dotnet tool run reportgenerator -reports:tests/**/TestResults/**/coverage.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
             } else {
               bat 'dotnet tool restore || echo tool restore failed'
-                    bat 'dotnet tool run reportgenerator -reports:tests\\**\\TestResults\\**\\coverage*.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
+              bat 'dotnet tool run reportgenerator -reports:tests\\**\\TestResults\\**\\coverage.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
             }
           }
         }
@@ -98,11 +98,24 @@ pipeline {
   post {
     always {
       dir("${env.PROJECT_DIR}") {
-        archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
-        archiveArtifacts artifacts: 'tests/**/TestResults.trx', allowEmptyArchive: true
-        archiveArtifacts artifacts: 'tests/**/TestResults/coverage.cobertura.xml', allowEmptyArchive: true
-        archiveArtifacts artifacts: 'tests/**/TestResults/CoverageReport/**', allowEmptyArchive: true
-        junit allowEmptyResults: true, testResults: 'tests/**/TestResults.trx'
+        script {
+          // Convert VSTest TRX -> JUnit XML so Jenkins 'junit' step can consume results
+          if (isUnix()) {
+            sh 'dotnet tool install --tool-path .tools trx2junit --version 1.4.0 || true'
+            sh '.tools/trx2junit tests/ShoppingCart.Tests/TestResults/TestResults.trx -o tests/ShoppingCart.Tests/TestResults/junit.xml || true'
+          } else {
+            bat 'dotnet tool install --tool-path .tools trx2junit --version 1.4.0 || echo tool install failed'
+            bat '.tools\\trx2junit.exe tests\\ShoppingCart.Tests\\TestResults\\TestResults.trx -o tests\\ShoppingCart.Tests\\TestResults\\junit.xml || echo conversion failed'
+          }
+
+          archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'tests/**/TestResults.trx', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'tests/**/TestResults/coverage.xml', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'tests/**/TestResults/CoverageReport/**', allowEmptyArchive: true
+
+          // Publish test results (converted junit format)
+          junit allowEmptyResults: true, testResults: 'tests/**/TestResults/junit.xml'
+        }
       }
     }
   }

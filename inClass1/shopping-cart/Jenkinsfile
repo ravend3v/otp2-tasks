@@ -99,22 +99,29 @@ pipeline {
     always {
       dir("${env.PROJECT_DIR}") {
         script {
-          // Convert VSTest TRX -> JUnit XML so Jenkins 'junit' step can consume results
-          if (isUnix()) {
-            sh 'dotnet tool install --tool-path .tools trx2junit --version 1.4.0 || true'
-            sh '.tools/trx2junit tests/ShoppingCart.Tests/TestResults/TestResults.trx -o tests/ShoppingCart.Tests/TestResults/junit.xml || true'
-          } else {
-            bat 'dotnet tool install --tool-path .tools trx2junit --version 1.4.0 || echo tool install failed'
-            bat '.tools\\trx2junit.exe tests\\ShoppingCart.Tests\\TestResults\\TestResults.trx -o tests\\ShoppingCart.Tests\\TestResults\\junit.xml || echo conversion failed'
-          }
-
+          // Archive build artifacts and raw test results
           archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
           archiveArtifacts artifacts: 'tests/**/TestResults.trx', allowEmptyArchive: true
           archiveArtifacts artifacts: 'tests/**/TestResults/coverage.xml', allowEmptyArchive: true
           archiveArtifacts artifacts: 'tests/**/TestResults/CoverageReport/**', allowEmptyArchive: true
 
-          // Publish test results (converted junit format)
-          junit allowEmptyResults: true, testResults: 'tests/**/TestResults/junit.xml'
+          // Publish test results using the xUnit plugin (TRX/MSTest)
+          // Requires the xUnit plugin installed on Jenkins
+          xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'tests/**/TestResults/*.trx']],
+                thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], [$class: 'SkippedThreshold', unstableThreshold: '0']],
+                skipNoTestFiles: true
+
+          // Publish Cobertura coverage data (requires Cobertura plugin)
+          // This will generate coverage trends in Jenkins
+          cobertura coberturaReportFile: 'tests/**/TestResults/coverage.xml', autoUpdateHealth: false, failUnhealthy: false, failUnstable: false
+
+          // Publish the HTML coverage report (requires HTML Publisher plugin)
+          publishHTML([allowMissing: false,
+                       alwaysLinkToLastBuild: true,
+                       keepAll: true,
+                       reportDir: 'tests/ShoppingCart.Tests/TestResults/CoverageReport',
+                       reportFiles: 'index.html',
+                       reportName: 'Code Coverage Report'])
         }
       }
     }

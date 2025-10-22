@@ -54,17 +54,17 @@ pipeline {
           script {
             // Clean previous test results
             if (isUnix()) {
-              sh 'rm -rf tests/ShoppingCart.Tests/TestResults || true'
-              sh 'mkdir -p tests/ShoppingCart.Tests/TestResults/Report || true'
+              sh 'rm -rf reports/ShoppingCart.Tests || true'
+              sh 'mkdir -p reports/ShoppingCart.Tests || true'
             } else {
-              bat 'if exist tests\\ShoppingCart.Tests\\TestResults rmdir /s /q tests\\ShoppingCart.Tests\\TestResults || echo No old TestResults'
-              bat 'mkdir tests\\ShoppingCart.Tests\\TestResults\\Report || echo TestResults directory exists'
+              bat 'if exist reports\\ShoppingCart.Tests rmdir /s /q reports\\ShoppingCart.Tests || echo No old reports'
+              bat 'mkdir reports\\ShoppingCart.Tests || echo reports directory exists'
             }
             // Run tests and produce TRX + OpenCover coverage XML
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults/Report /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/Report/coverage.xml'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports/ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=reports/ShoppingCart.Tests/coverage.xml'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults\\Report /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\Report\\coverage.xml'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports\\ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=reports\\ShoppingCart.Tests\\coverage.xml'
             }
           }
         }
@@ -90,11 +90,22 @@ pipeline {
           script {
             // Generate HTML and Clover coverage reports using ReportGenerator
             if (isUnix()) {
-              sh 'dotnet tool restore || true'
-              sh 'dotnet tool run reportgenerator -reports:tests/ShoppingCart.Tests/TestResults/Report/coverage.xml -targetdir:tests/ShoppingCart.Tests/TestResults/Report -reporttypes:Html;Clover'
+              sh '''
+                if ls reports/ShoppingCart.Tests/coverage*.xml 1> /dev/null 2>&1; then
+                  dotnet tool restore || true
+                  dotnet tool run reportgenerator -reports:reports/ShoppingCart.Tests/coverage*.xml -targetdir:reports/ShoppingCart.Tests -reporttypes:Html;Clover
+                else
+                  echo "No coverage files found, skipping report generation"
+                fi
+              '''
             } else {
-              bat 'dotnet tool restore || echo tool restore failed'
-              bat 'dotnet tool run reportgenerator -reports:tests\\ShoppingCart.Tests\\TestResults\\Report\\coverage.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\Report -reporttypes:Html;Clover'
+              bat '\
+                if exist reports\\ShoppingCart.Tests\\coverage*.xml (\
+                  dotnet tool restore || echo tool restore failed\
+                  dotnet tool run reportgenerator -reports:reports\\ShoppingCart.Tests\\coverage*.xml -targetdir:reports\\ShoppingCart.Tests -reporttypes:Html;Clover\
+                ) else (\
+                  echo No coverage files found, skipping report generation\
+                )'
             }
           }
         }
@@ -108,15 +119,15 @@ pipeline {
         script {
           // Archive build and test artifacts
           archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
-          archiveArtifacts artifacts: 'tests/**/TestResults/Report/**', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
 
           // Publish TRX test results via xUnit plugin
-          xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'tests/**/TestResults/Report/*.trx']], thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], [$class: 'SkippedThreshold', unstableThreshold: '0']], skipNoTestFiles: true
+          xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']], thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], [$class: 'SkippedThreshold', unstableThreshold: '0']], skipNoTestFiles: true
 
 
           // Publish Clover coverage
           try {
-            step([$class: 'CloverPublisher', cloverReportDir: 'tests/ShoppingCart.Tests/TestResults/Report', cloverReportFileName: 'Clover.xml'])
+            step([$class: 'CloverPublisher', cloverReportDir: 'reports/ShoppingCart.Tests', cloverReportFileName: 'Clover.xml'])
           } catch (err) {
             echo "Clover publish failed: ${err}"
             currentBuild.result = 'UNSTABLE'
@@ -126,7 +137,7 @@ pipeline {
           publishHTML([allowMissing: false,
                        alwaysLinkToLastBuild: true,
                        keepAll: true,
-                       reportDir: 'tests/ShoppingCart.Tests/TestResults/Report',
+                       reportDir: 'reports/ShoppingCart.Tests',
                        reportFiles: 'index.html',
                        reportName: 'Code Coverage Report'])
         }

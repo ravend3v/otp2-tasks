@@ -110,7 +110,7 @@ pipeline {
             } else {
               // Windows: list the reports folder, check for the exact coverage.xml and run ReportGenerator
               bat 'echo %CD% & dir reports\\ShoppingCart.Tests || echo no reports dir'
-              bat '
+              bat '''
                 if exist reports\\ShoppingCart.Tests\\coverage.xml (
                   dotnet tool restore || echo tool restore failed
                   dotnet tool run reportgenerator -reports:reports\\ShoppingCart.Tests\\coverage*.xml -targetdir:reports\\ShoppingCart.Tests -reporttypes:Html;Clover
@@ -118,7 +118,7 @@ pipeline {
                   dir reports\\ShoppingCart.Tests
                 ) else (
                   echo No coverage.xml found in reports\\ShoppingCart.Tests, skipping report generation
-                )'
+                )'''
           }
         }
       }

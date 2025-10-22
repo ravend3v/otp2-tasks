@@ -16,17 +16,20 @@ class Program
         // Resource manager using base name from the Localization folder
         var rm = new ResourceManager("shopping-cart.Localization.Resources", typeof(Program).Assembly);
 
-        Console.WriteLine(rm.GetString("LanguageHeader", CultureInfo.InvariantCulture));
-        Console.WriteLine(rm.GetString("LanguageOptions", CultureInfo.InvariantCulture));
-        Console.WriteLine(rm.GetString("ChooseLanguage", CultureInfo.InvariantCulture));
+        // Show the initial language menu in Finnish by default
+        var defaultMenuCulture = new CultureInfo("fi-FI");
+        Console.WriteLine(rm.GetString("LanguageHeader", defaultMenuCulture));
+        Console.WriteLine(rm.GetString("LanguageOptions", defaultMenuCulture));
+        Console.WriteLine(rm.GetString("ChooseLanguage", defaultMenuCulture));
 
         var choice = Console.ReadLine()?.Trim();
         CultureInfo culture = choice switch
         {
+            "1" => new CultureInfo("en-US"),
             "2" => new CultureInfo("fi-FI"),
             "3" => new CultureInfo("sv-SE"),
             "4" => new CultureInfo("ja-JP"),
-            _ => new CultureInfo("en-US"),
+            _ => new CultureInfo("fi-FI"),
         };
 
         CultureInfo.CurrentCulture = culture;
@@ -37,7 +40,7 @@ class Program
         var items = new List<(decimal Price, int Quantity)>();
         while (true)
         {
-            Console.Write(T("EnterItemPrice"));
+            Console.Write(T("EnterPrice"));
             var priceInput = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(priceInput))
                 break;
@@ -48,7 +51,7 @@ class Program
                 continue;
             }
 
-            Console.Write(T("EnterItemQuantity"));
+            Console.Write(T("EnterQuantity"));
             var quantityInput = Console.ReadLine();
             if (!int.TryParse(quantityInput, NumberStyles.Integer, culture, out var quantity) || quantity < 0)
             {

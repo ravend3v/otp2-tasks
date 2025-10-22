@@ -24,12 +24,6 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
-              // Show report folder contents before archiving/publishing
-              if (isUnix()) {
-                sh 'echo "Pre-publish reports listing:"; ls -la reports/ShoppingCart.Tests || true'
-              } else {
-                bat 'echo %CD% & dir reports\\ShoppingCart.Tests || echo no reports dir'
-              }
             if (isUnix()) {
               sh 'dotnet restore src/shopping-cart.csproj'
             } else {
@@ -58,21 +52,14 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
-            // Clean previous test results
             if (isUnix()) {
               sh 'rm -rf reports/ShoppingCart.Tests || true'
               sh 'mkdir -p reports/ShoppingCart.Tests || true'
-            } else {
-              bat 'if exist reports\\ShoppingCart.Tests rmdir /s /q reports\\ShoppingCart.Tests || echo No old reports'
-              bat 'mkdir reports\\ShoppingCart.Tests || echo reports directory exists'
-            }
-            // Run tests and produce TRX + OpenCover coverage XML
-            if (isUnix()) {
               sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports/ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../reports/ShoppingCart.Tests/coverage.xml'
             } else {
+              bat 'if exist reports\\ShoppingCart.Tests rmdir /s /q reports\\ShoppingCart.Tests'
+              bat 'mkdir reports\\ShoppingCart.Tests'
               bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports\\ShoppingCart.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=..\\..\\reports\\ShoppingCart.Tests\\coverage.xml'
-              // Debug: Show what files were actually created
-              bat 'echo "Files after test run:" & dir reports\\ShoppingCart.Tests'
             }
           }
         }
@@ -96,30 +83,22 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
-            // Generate HTML and Clover coverage reports using ReportGenerator
             if (isUnix()) {
-              // Show report directory and run ReportGenerator if coverage exists
-              sh 'echo "Working dir: $(pwd)"; ls -la reports/ShoppingCart.Tests || true'
               sh '''
                 if ls reports/ShoppingCart.Tests/coverage*.xml 1> /dev/null 2>&1; then
-                  dotnet tool restore || true
+                  dotnet tool restore
                   dotnet tool run reportgenerator -reports:reports/ShoppingCart.Tests/coverage*.xml -targetdir:reports/ShoppingCart.Tests -reporttypes:Html;Clover
-                  echo "ReportGenerator output:"; ls -la reports/ShoppingCart.Tests || true
                 else
                   echo "No coverage files found, skipping report generation"
                 fi
               '''
             } else {
-              // Windows: list the reports folder, check for the exact coverage.xml and run ReportGenerator
-              bat 'echo %CD% & dir reports\\ShoppingCart.Tests || echo no reports dir'
               bat '''
                 if exist reports\\ShoppingCart.Tests\\coverage.xml (
-                  dotnet tool restore || echo tool restore failed
+                  dotnet tool restore
                   dotnet tool run reportgenerator -reports:reports\\ShoppingCart.Tests\\coverage*.xml -targetdir:reports\\ShoppingCart.Tests -reporttypes:"Html;Clover"
-                  echo ReportGenerator output:
-                  dir reports\\ShoppingCart.Tests
                 ) else (
-                  echo No coverage.xml found in reports\\ShoppingCart.Tests, skipping report generation
+                  echo No coverage.xml found, skipping report generation
                 )
               '''
             }
@@ -133,29 +112,31 @@ pipeline {
     always {
       dir("${env.PROJECT_DIR}") {
         script {
-          // Archive build and test artifacts
           archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
           archiveArtifacts artifacts: 'reports/**', allowEmptyArchive: true
 
-          // Publish TRX test results via xUnit plugin
-          xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']], thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], [$class: 'SkippedThreshold', unstableThreshold: '0']], skipNoTestFiles: true
+          xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']], 
+                thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], 
+                           [$class: 'SkippedThreshold', unstableThreshold: '0']], 
+                skipNoTestFiles: true
 
-
-          // Publish Clover coverage
           try {
-            step([$class: 'CloverPublisher', cloverReportDir: 'reports/ShoppingCart.Tests', cloverReportFileName: 'Clover.xml'])
+            step([$class: 'CloverPublisher', 
+                  cloverReportDir: 'reports/ShoppingCart.Tests', 
+                  cloverReportFileName: 'Clover.xml'])
           } catch (err) {
             echo "Clover publish failed: ${err}"
             currentBuild.result = 'UNSTABLE'
           }
 
-          // Publish the HTML coverage report (requires HTML Publisher plugin)
-          publishHTML([allowMissing: false,
-                       alwaysLinkToLastBuild: true,
-                       keepAll: true,
-                       reportDir: 'reports/ShoppingCart.Tests',
-                       reportFiles: 'index.html',
-                       reportName: 'Code Coverage Report'])
+          publishHTML([
+            allowMissing: false,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'reports/ShoppingCart.Tests',
+            reportFiles: 'index.html',
+            reportName: 'Code Coverage Report'
+          ])
         }
       }
     }

@@ -55,9 +55,9 @@ pipeline {
             // Run tests and collect coverage using Coverlet (via built-in data collector)
             // Output TRX into tests/**/TestResults and coverage in cobertura format.
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --no-build --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.cobertura.xml'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --no-build --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.cobertura.xml'
             }
           }
         }

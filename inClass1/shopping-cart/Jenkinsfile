@@ -61,11 +61,11 @@ pipeline {
               bat 'mkdir tests\\ShoppingCart.Tests\\TestResults || echo TestResults directory exists'
             }
             // Run tests and collect coverage using Coverlet (via built-in data collector)
-            // Output TRX into tests/**/TestResults and coverage in cobertura format.
+            // Output TRX into tests/**/TestResults and coverage in OpenCover format.
             if (isUnix()) {
-              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.xml'
+              sh 'dotnet test tests/ShoppingCart.Tests/ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests/ShoppingCart.Tests/TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=tests/ShoppingCart.Tests/TestResults/coverage.xml'
             } else {
-              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.xml'
+              bat 'dotnet test tests\\ShoppingCart.Tests\\ShoppingCart.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory tests\\ShoppingCart.Tests\\TestResults /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=tests\\ShoppingCart.Tests\\TestResults\\coverage.xml'
             }
           }
         }
@@ -92,10 +92,10 @@ pipeline {
             // Use ReportGenerator (dotnet tool) to convert cobertura xml to an HTML report
             if (isUnix()) {
               sh 'dotnet tool restore || true'
-              sh 'dotnet tool run reportgenerator -reports:tests/**/TestResults/**/coverage.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Cobertura'
+              sh 'dotnet tool run reportgenerator -reports:tests/**/TestResults/**/coverage.xml -targetdir:tests/ShoppingCart.Tests/TestResults/CoverageReport -reporttypes:Html;Clover'
             } else {
               bat 'dotnet tool restore || echo tool restore failed'
-              bat 'dotnet tool run reportgenerator -reports:tests\\**\\TestResults\\**\\coverage.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Cobertura'
+              bat 'dotnet tool run reportgenerator -reports:tests\\**\\TestResults\\**\\coverage.xml -targetdir:tests\\ShoppingCart.Tests\\TestResults\\CoverageReport -reporttypes:Html;Clover'
             }
           }
         }
@@ -110,7 +110,7 @@ pipeline {
           // Archive build artifacts and raw test results
           archiveArtifacts artifacts: 'src/bin/**', allowEmptyArchive: true
           archiveArtifacts artifacts: 'tests/**/TestResults.trx', allowEmptyArchive: true
-          archiveArtifacts artifacts: 'tests/**/TestResults/coverage.xml', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'tests/**/TestResults/Clover*.xml', allowEmptyArchive: true
           archiveArtifacts artifacts: 'tests/**/TestResults/CoverageReport/**', allowEmptyArchive: true
 
           // Publish test results using the xUnit plugin (TRX/MSTest)
@@ -119,9 +119,15 @@ pipeline {
                 thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], [$class: 'SkippedThreshold', unstableThreshold: '0']],
                 skipNoTestFiles: true
 
-          // Publish Cobertura coverage data (requires Cobertura plugin)
-          // This will generate coverage trends in Jenkins
-          cobertura coberturaReportFile: 'tests/**/TestResults/coverage.xml', autoUpdateHealth: false, failUnhealthy: false, failUnstable: false
+          // (Cobertura publishing removed) We now rely on OpenCover/Clover/HTML reports.
+
+          // Publish the Clover coverage data (requires Clover plugin)
+          try {
+            step([$class: 'CloverPublisher', cloverReportDir: 'tests/ShoppingCart.Tests/TestResults', cloverReportFileName: 'Clover.xml'])
+          } catch (err) {
+            echo "Clover publish failed: ${err}"
+            currentBuild.result = 'UNSTABLE'
+          }
 
           // Publish the HTML coverage report (requires HTML Publisher plugin)
           publishHTML([allowMissing: false,

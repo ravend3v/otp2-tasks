@@ -6,8 +6,12 @@
 3) スウェーデン語
 4) 日本語</value></data>
   <data name="ChooseLanguage"><value>言語を選択してください（1-4）: </value></data>
-  <data name="EnterPrice"><value>商品の価格を入力してください（空で終了）: </value></data>
-  <data name="EnterQuantity"><value>この商品の数量を入力してください: </value></data>
+
+  <data name="EnterItemCount"><value>購入する商品の数を入力してください:</value></data>
+  <data name="EnterPrice"><value>商品の価格を入力してください {0}:</value></data>
+  <data name="EnterQuantity"><value>商品の数量を入力してください {0}:</value></data>
+  <data name="ItemTotal"><value>商品 {0} の合計: {1}</value></data>
+
   <data name="AddAnother"><value>別の商品を追加しますか？ (y/n): </value></data>
   <data name="InvalidNumber"><value>無効な数値です。もう一度お試しください。</value></data>
   <data name="Total"><value>合計金額: {0}</value></data>

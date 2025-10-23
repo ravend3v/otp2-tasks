@@ -6,9 +6,12 @@
 3) Swedish
 4) Japanese</value></data>
   <data name="ChooseLanguage"><value>Select language (1-4): </value></data>
-  <data name="EnterPrice"><value>Enter item price (blank to finish): </value></data>
-  <data name="EnterQuantity"><value>Enter quantity for this item: </value></data>
-  <data name="AddAnother"><value>Add another item? (y/n): </value></data>
+
+  <data name="EnterItemCount"><value>Enter the number of items to purchase:</value></data>
+  <data name="EnterPrice"><value>Enter price for item {0}:</value></data>
+  <data name="EnterQuantity"><value>Enter quantity for item {0}:</value></data>
+  <data name="ItemTotal"><value>Item {0} total: {1}</value></data>
+
   <data name="InvalidNumber"><value>Invalid number, try again.</value></data>
   <data name="Total"><value>Total cost: {0}</value></data>
   <data name="Goodbye"><value>Press Enter to exit.</value></data>

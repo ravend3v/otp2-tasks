@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Title" xml:space="preserve">
+    <value>Ostoskori</value>
+  </data>
+  <data name="AddItemHeader" xml:space="preserve">
+    <value>Lisää uusi tuote</value>
+  </data>
+  <data name="ItemPrice" xml:space="preserve">
+    <value>Tuotteen hinta:</value>
+  </data>
+  <data name="ItemQuantity" xml:space="preserve">
+    <value>Tuotteen määrä:</value>
+  </data>
+  <data name="AddItemButton" xml:space="preserve">
+    <value>Lisää koriin</value>
+  </data>
+  <data name="CurrentCartHeader" xml:space="preserve">
+    <value>Ostoskorisi</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Hinta</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Määrä</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Välisumma</value>
+  </data>
+  <data name="TotalCost" xml:space="preserve">
+    <value>Kokonaishinta:</value>
+  </data>
+  <data name="ClearCartButton" xml:space="preserve">
+    <value>Tyhjennä kori</value>
+  </data>
+  <data name="EmptyCart" xml:space="preserve">
+    <value>Ostoskorisi on tyhjä.</value>
+  </data>
+</root>

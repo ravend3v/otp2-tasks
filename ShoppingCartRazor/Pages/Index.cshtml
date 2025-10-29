@@ -1,0 +1,76 @@
+﻿@page
+@model IndexModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<IndexModel> Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<h1 class="display-4">@Localizer["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <h4>@Localizer["AddItemHeader"]</h4>
+            <hr />
+            <form method="post" asp-page-handler="AddItem">
+
+                <div class="form-group mb-2">
+                    <label>@Localizer["ItemPrice"]</label>
+                    <input asp-for="NewItem.Price" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="NewItem.Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-2">
+                    <label>@Localizer["ItemQuantity"]</label>
+                    <input asp-for="NewItem.Quantity" class="form-control" type="number" />
+                    <span asp-validation-for="NewItem.Quantity" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">@Localizer["AddItemButton"]</button>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-8">
+        <h4>@Localizer["CurrentCartHeader"]</h4>
+        <hr />
+
+        @if (Model.CartItems.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Price"]</th>
+                        <th>@Localizer["Quantity"]</th>
+                        <th>@Localizer["Subtotal"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td>@item.Price.ToString("C")</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Subtotal.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-end fw-bold">@Localizer["TotalCost"]</td>
+                        <td class="fw-bold">@Model.TotalCost.ToString("C")</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <form method="post" asp-page-handler="ClearCart" class="mt-2">
+                <button type="submit" class="btn btn-danger">@Localizer["ClearCartButton"]</button>
+            </form>
+        }
+        else
+        {
+            <p>@Localizer["EmptyCart"]</p>
+        }
+    </div>
+</div>

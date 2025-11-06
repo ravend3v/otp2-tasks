@@ -1,0 +1,74 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = Model.LocalizedStrings.GetValueOrDefault("title", "BMI Calculator");
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Language Switcher -->
+            <div class="text-center mb-3">
+                <div class="btn-group" role="group" aria-label="Language selection">
+                    <a href="?lang=en" class="btn @(Model.CurrentLanguage == "en" ? "btn-primary" : "btn-outline-primary")">English</a>
+                    <a href="?lang=fi" class="btn @(Model.CurrentLanguage == "fi" ? "btn-primary" : "btn-outline-primary")">Suomi</a>
+                    <a href="?lang=fa" class="btn @(Model.CurrentLanguage == "fa" ? "btn-primary" : "btn-outline-primary")">فارسی</a>
+                </div>
+            </div>
+
+            <h1 class="text-center mb-4">@Model.LocalizedStrings.GetValueOrDefault("title", "BMI Calculator")</h1>
+            
+            <form method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label asp-for="Weight" class="form-label">@Model.LocalizedStrings.GetValueOrDefault("weight_label", "Weight (kg)")</label>
+                    <input asp-for="Weight" class="form-control" placeholder="@Model.LocalizedStrings.GetValueOrDefault("weight_placeholder", "Enter your weight in kilograms")" />
+                    <span asp-validation-for="Weight" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Height" class="form-label">@Model.LocalizedStrings.GetValueOrDefault("height_label", "Height (cm)")</label>
+                    <input asp-for="Height" class="form-control" placeholder="@Model.LocalizedStrings.GetValueOrDefault("height_placeholder", "Enter your height in centimeters")" step="1" />
+                    <span asp-validation-for="Height" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">@Model.LocalizedStrings.GetValueOrDefault("calculate_button", "Calculate BMI")</button>
+                </div>
+            </form>
+
+            @if (Model.BMI.HasValue)
+            {
+                <div class="mt-4 p-3 border rounded">
+                    <h3 class="text-center">@Model.LocalizedStrings.GetValueOrDefault("result_title", "Your BMI Result")</h3>
+                    <div class="text-center">
+                        <h4 class="mb-2">BMI: <span class="badge bg-primary">@Model.BMI</span></h4>
+                        <p class="mb-0">@Model.LocalizedStrings.GetValueOrDefault("category_label", "Category"): <span class="fw-bold @GetCategoryClass(Model.BMICategory)">@Model.BMICategory</span></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@functions {
+    private string GetCategoryClass(string? category)
+    {
+        var underweight = Model.LocalizedStrings.GetValueOrDefault("underweight", "Underweight");
+        var normalWeight = Model.LocalizedStrings.GetValueOrDefault("normal_weight", "Normal weight");
+        var overweight = Model.LocalizedStrings.GetValueOrDefault("overweight", "Overweight");
+        var obese = Model.LocalizedStrings.GetValueOrDefault("obese", "Obese");
+
+        return category switch
+        {
+            var c when c == underweight => "text-info",
+            var c when c == normalWeight => "text-success",
+            var c when c == overweight => "text-warning",
+            var c when c == obese => "text-danger",
+            _ => "text-secondary"
+        };
+    }
+}

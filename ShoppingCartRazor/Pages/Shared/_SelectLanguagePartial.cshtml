@@ -1,13 +1,24 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Options
+@using Microsoft.Extensions.Localization
+@using ShoppingCartRazor.Resources
 
 @inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IStringLocalizer<LanguageNames> Localizer
 
 @{
+    // Preload localized names into a dictionary
+    var localizedNames = LocOptions.Value.SupportedUICultures
+    .ToDictionary(c => c.Name, c => Localizer[c.Name].Value);
+
     // Get culture details from the request
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var cultureItems = LocOptions.Value.SupportedUICultures
-    .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+    .Select(c => new SelectListItem
+    {
+        Value = c.Name,
+        Text = localizedNames[c.Name]
+    })
     .ToList();
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" :
     $"~{Context.Request.Path}{Context.Request.QueryString}";

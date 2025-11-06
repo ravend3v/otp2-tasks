@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="en-US" xml:space="preserve">
+    <value>انگلیسی</value>
+  </data>
+  <data name="fi-FI" xml:space="preserve">
+    <value>فنلاندی</value>
+  </data>
+  <data name="fa-IR" xml:space="preserve">
+    <value>فارسی</value>
+  </data>
+
+</root>

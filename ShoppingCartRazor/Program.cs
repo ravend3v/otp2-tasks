@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Define the cultures / languages supported
 var supportedCultures = new[]
 {
-    new CultureInfo("en"),
-    new CultureInfo("fi"),
-    new CultureInfo("fa")
+    new CultureInfo("en-US"),
+    new CultureInfo("fi-FI"),
+    new CultureInfo("fa-IR")
 };
 
 // Add localization services
@@ -22,7 +22,7 @@ builder.Services.AddRazorPages()
 // Configure the localization options
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    options.DefaultRequestCulture = new RequestCulture("en");
+    options.DefaultRequestCulture = new RequestCulture("en-US");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 

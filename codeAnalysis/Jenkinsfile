@@ -68,12 +68,11 @@ pipeline {
   post {
     always {
       dir("${env.PROJECT_DIR}") {
-        archiveArtifacts artifacts: 'bin/**,reports/**', allowEmptyArchive: true
-
-        xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']],
-              thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'],
-                         [$class: 'SkippedThreshold', unstableThreshold: '0']],
-              skipNoTestFiles: true
+        archiveArtifacts artifacts: 'src/bin/**,reports/**', allowEmptyArchive: true
+        
+        xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']], 
+              thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], 
+                         [$class: 'SkippedThreshold', unstableThreshold: '0']]
 
         script {
           try {

@@ -1,0 +1,95 @@
+pipeline {
+  agent any
+
+  tools {
+    dotnetsdk '.NET 9'
+  }
+
+  environment {
+    PROJECT_DIR = "codeAnalysis"
+    IS_UNIX = "${isUnix()}"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build & Test') {
+      steps {
+        dir("${env.PROJECT_DIR}") {
+          script {
+            def commands = [
+              restore: env.IS_UNIX == 'true' ? 'dotnet restore src/codeAnalysis.csproj' : 'dotnet restore src\\codeAnalysis.csproj',
+              build: env.IS_UNIX == 'true' ? 'dotnet build src/codeAnalysis.csproj -c Release --no-restore' : 'dotnet build src\\codeAnalysis.csproj -c Release --no-restore',
+              cleanReports: env.IS_UNIX == 'true' ? 'rm -rf reports/Calc.Tests && mkdir -p reports/Calc.Tests' : 'if exist reports\\Calc.Tests rmdir /s /q reports\\Calc.Tests && mkdir reports\\Calc.Tests',
+              test: env.IS_UNIX == 'true' ?
+                'dotnet test tests/Calc.Tests/Calc.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports/Calc.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../reports/Calc.Tests/coverage.xml' :
+                'dotnet test tests\\Calc.Tests\\Calc.Tests.csproj --verbosity minimal --logger "trx;LogFileName=TestResults.trx" --results-directory reports\\Calc.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=..\\..\\reports\\Calc.Tests\\coverage.xml'
+            ]
+
+            if (env.IS_UNIX == 'true') {
+              sh "${commands.restore}"
+              sh "${commands.build}"
+              sh "${commands.cleanReports}"
+              sh "${commands.test}"
+            } else {
+              bat "${commands.restore}"
+              bat "${commands.build}"
+              bat "${commands.cleanReports}"
+              bat "${commands.test}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Generate Coverage Report') {
+      steps {
+        dir("${env.PROJECT_DIR}") {
+          script {
+            def coverageCmd = env.IS_UNIX == 'true' ?
+              'dotnet tool restore && dotnet tool run reportgenerator -reports:reports/Calc.Tests/coverage*.xml -targetdir:reports/Calc.Tests -reporttypes:Html;Clover' :
+              'dotnet tool restore && dotnet tool run reportgenerator -reports:reports\\Calc.Tests\\coverage*.xml -targetdir:reports\\Calc.Tests -reporttypes:"Html;Clover"'
+
+            if (env.IS_UNIX == 'true') {
+              sh "if ls reports/Calc.Tests/coverage*.xml 1> /dev/null 2>&1; then ${coverageCmd}; else echo 'No coverage files found'; fi"
+            } else {
+              bat "if exist reports\\Calc.Tests\\coverage.xml (${coverageCmd}) else (echo No coverage.xml found)"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      dir("${env.PROJECT_DIR}") {
+        archiveArtifacts artifacts: 'bin/**,reports/**', allowEmptyArchive: true
+
+        xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']],
+              thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'],
+                         [$class: 'SkippedThreshold', unstableThreshold: '0']],
+              skipNoTestFiles: true
+
+        script {
+          try {
+            step([$class: 'CloverPublisher', cloverReportDir: 'reports/Calc.Tests', cloverReportFileName: 'Clover.xml'])
+          } catch (err) {
+            echo "Clover publish failed: ${err}"
+            currentBuild.result = 'UNSTABLE'
+          }
+        }
+
+        publishHTML([
+          allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true,
+          reportDir: 'reports/Calc.Tests', reportFiles: 'index.html',
+          reportName: 'Code Coverage Report'
+        ])
+      }
+    }
+  }
+}

@@ -87,7 +87,9 @@ pipeline {
         dir("${env.PROJECT_DIR}") {
           script {
             withSonarQubeEnv('LocalSonarQube') {
-              def sonarEndCmd = 'dotnet sonarscanner end'
+              def sonarEndCmd = env.IS_UNIX == 'true' ?
+                'dotnet sonarscanner end /d:sonar.login="$SONAR_AUTH_TOKEN"' :
+                'dotnet sonarscanner end /d:sonar.login="%SONAR_AUTH_TOKEN%"'
               
               if (env.IS_UNIX == 'true') {
                 sh sonarEndCmd

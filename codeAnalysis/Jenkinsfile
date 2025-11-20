@@ -22,31 +22,38 @@ pipeline {
     }
 
     stage('SonarQube Begin') {
+      when {
+      environment name: 'SONAR_HOST_URL', value: ''
+      not { environment name: 'SONAR_HOST_URL', value: '' }
+      }
       steps {
-        dir("${env.PROJECT_DIR}") {
-          script {
-            try {
-              withSonarQubeEnv('LocalSonarQube') {
-                def sonarBeginCmd = env.IS_UNIX == 'true' ?
-                  "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports/Calc.Tests/coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports/Calc.Tests/TestResults.trx\"" :
-                  "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports\\Calc.Tests\\coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports\\Calc.Tests\\TestResults.trx\""
-                
-                if (env.IS_UNIX == 'true') {
-                  sh "dotnet tool restore"
-                  sh sonarBeginCmd
-                } else {
-                  bat "dotnet tool restore"
-                  bat sonarBeginCmd
-                }
-                env.SONAR_ENABLED = 'true'
-              }
-            } catch (Exception e) {
-              echo "SonarQube begin failed: ${e.getMessage()}"
-              echo "Continuing without SonarQube analysis"
-              env.SONAR_ENABLED = 'false'
-            }
+      dir("${env.PROJECT_DIR}") {
+        script {
+        try {
+          def sonarBeginCmd = env.IS_UNIX == 'true' ?
+          """
+          dotnet sonarscanner begin \\
+            /k:jenkins-sonarqube-test \\
+            /d:sonar.host.url=\${SONAR_HOST_URL} \\
+            /d:sonar.login=\${SONAR_AUTH_TOKEN}
+          """ :
+          "dotnet sonarscanner begin /k:jenkins-sonarqube-test /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.login=%SONAR_AUTH_TOKEN%"
+          
+          if (env.IS_UNIX == 'true') {
+          sh "dotnet tool restore"
+          sh sonarBeginCmd
+          } else {
+          bat "dotnet tool restore"
+          bat sonarBeginCmd
           }
+          env.SONAR_ENABLED = 'true'
+        } catch (Exception e) {
+          echo "SonarQube begin failed: ${e.getMessage()}"
+          echo "Continuing without SonarQube analysis"
+          env.SONAR_ENABLED = 'false'
         }
+        }
+      }
       }
     }
 

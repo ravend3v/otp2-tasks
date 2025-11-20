@@ -12,6 +12,10 @@ pipeline {
     // SonarQube
     SONAR_PROJECT_KEY= "jenkins-sonarqube-test"
     SONAR_PROJECT_NAME= "Jenkins SonarQube Test"
+
+    // Docker
+    DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
+    DOCKER_IMAGE_NAME = 'eliasoj/jenkins-sonarqube-test'
   }
 
   stages {
@@ -128,6 +132,40 @@ pipeline {
         }
       }
     }
+
+    stage('Build Docker Image') {
+      steps {
+        dir("${env.PROJECT_DIR}") {
+          script {
+            if (env.IS_UNIX == 'true') {
+              sh "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
+              sh "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
+            } else {
+              bat "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
+              bat "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
+            }
+          }
+        }
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        script {
+          withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+            if (env.IS_UNIX == 'true') {
+              sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+              sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+              sh "docker push ${DOCKER_IMAGE_NAME}:latest"
+            } else {
+              bat 'echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin'
+              bat "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+              bat "docker push ${DOCKER_IMAGE_NAME}:latest"
+            }
+          }
+        }
+      }
+    }
   }
 
   post {
@@ -161,5 +199,19 @@ pipeline {
         ])
       }
     }
+
+    cleanup {
+      script {
+        // Clean up Docker images to save space
+        if (env.IS_UNIX == 'true') {
+          sh "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} || true"
+          sh "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
+        } else {
+          bat "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} || true"
+          bat "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
+        }
+      }
+    }
   }
 }
+

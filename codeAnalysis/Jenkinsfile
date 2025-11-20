@@ -14,7 +14,7 @@ pipeline {
     SONAR_PROJECT_NAME= "Jenkins SonarQube Test"
 
     // Docker
-    DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
+    DOCKER_HUB_CREDENTIALS = 'Docker'
     DOCKER_IMAGE_NAME = 'eliasoj/jenkins-sonarqube-test'
   }
 

@@ -25,7 +25,7 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
-            withSonarQubeEnv('SonarQube') {
+            withSonarQubeEnv('LocalSonarQube') {
               def sonarBeginCmd = env.IS_UNIX == 'true' ?
                 "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports/Calc.Tests/coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports/Calc.Tests/TestResults.trx\"" :
                 "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports\\Calc.Tests\\coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports\\Calc.Tests\\TestResults.trx\""
@@ -76,7 +76,7 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
-            withSonarQubeEnv('SonarQube') {
+            withSonarQubeEnv('LocalSonarQube') {
               def sonarEndCmd = 'dotnet sonarscanner end'
               
               if (env.IS_UNIX == 'true') {

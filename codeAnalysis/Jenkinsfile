@@ -50,8 +50,9 @@ pipeline {
       steps {
         dir("${env.PROJECT_DIR}") {
           script {
+            // FIX APPLIED BELOW: Added quotes around "Html;Clover" in the Unix command
             def coverageCmd = env.IS_UNIX == 'true' ?
-              'dotnet tool restore && dotnet tool run reportgenerator -reports:reports/Calc.Tests/coverage*.xml -targetdir:reports/Calc.Tests -reporttypes:Html;Clover' :
+              'dotnet tool restore && dotnet tool run reportgenerator -reports:reports/Calc.Tests/coverage*.xml -targetdir:reports/Calc.Tests -reporttypes:"Html;Clover"' :
               'dotnet tool restore && dotnet tool run reportgenerator -reports:reports\\Calc.Tests\\coverage*.xml -targetdir:reports\\Calc.Tests -reporttypes:"Html;Clover"'
 
             if (env.IS_UNIX == 'true') {
@@ -72,10 +73,11 @@ pipeline {
         
         xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']], 
               thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], 
-                         [$class: 'SkippedThreshold', unstableThreshold: '0']]
+                           [$class: 'SkippedThreshold', unstableThreshold: '0']]
 
         script {
           try {
+            // This step requires the "Clover" plugin to be installed in Jenkins
             step([$class: 'CloverPublisher', cloverReportDir: 'reports/Calc.Tests', cloverReportFileName: 'Clover.xml'])
           } catch (err) {
             echo "Clover publish failed: ${err}"

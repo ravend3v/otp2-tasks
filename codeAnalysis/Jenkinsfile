@@ -8,12 +8,38 @@ pipeline {
   environment {
     PROJECT_DIR = "codeAnalysis"
     IS_UNIX = "${isUnix()}"
+
+    // SonarQube
+    SONAR_PROJECT_KEY= "jenkins-sonarqube-test"
+    SONAR_PROJECT_NAME= "Jenkins SonarQube Test"
   }
 
   stages {
     stage('Checkout') {
       steps {
         checkout scm
+      }
+    }
+
+    stage('SonarQube Begin') {
+      steps {
+        dir("${env.PROJECT_DIR}") {
+          script {
+            withSonarQubeEnv('SonarQube') {
+              def sonarBeginCmd = env.IS_UNIX == 'true' ?
+                "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports/Calc.Tests/coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports/Calc.Tests/TestResults.trx\"" :
+                "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports\\Calc.Tests\\coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports\\Calc.Tests\\TestResults.trx\""
+              
+              if (env.IS_UNIX == 'true') {
+                sh "dotnet tool restore"
+                sh sonarBeginCmd
+              } else {
+                bat "dotnet tool restore"
+                bat sonarBeginCmd
+              }
+            }
+          }
+        }
       }
     }
 
@@ -40,6 +66,32 @@ pipeline {
               bat "${commands.build}"
               bat "${commands.cleanReports}"
               bat "${commands.test}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('SonarQube End & Quality Gate') {
+      steps {
+        dir("${env.PROJECT_DIR}") {
+          script {
+            withSonarQubeEnv('SonarQube') {
+              def sonarEndCmd = 'dotnet sonarscanner end'
+              
+              if (env.IS_UNIX == 'true') {
+                sh sonarEndCmd
+              } else {
+                bat sonarEndCmd
+              }
+            }
+            
+            // Wait for SonarQube Quality Gate
+            timeout(time: 10, unit: 'MINUTES') {
+              def qg = waitForQualityGate()
+              if (qg.status != 'OK') {
+                error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              }
             }
           }
         }

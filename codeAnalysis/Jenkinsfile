@@ -204,10 +204,10 @@ pipeline {
       script {
         // Clean up Docker images to save space
         if (env.IS_UNIX == 'true') {
-          sh "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} || true"
+          sh "docker rmi ${DOCKER_IMAGE_NAME}:lates || true"
           sh "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
         } else {
-          bat "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} || true"
+          bat "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
           bat "docker rmi ${DOCKER_IMAGE_NAME}:latest || true"
         }
       }

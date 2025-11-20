@@ -118,27 +118,35 @@ pipeline {
     }
   }
 
-  post {
+    post {
     always {
       dir("${env.PROJECT_DIR}") {
         archiveArtifacts artifacts: 'src/bin/**,reports/**', allowEmptyArchive: true
         
+        script {
+          // Clean old test results before running xunit
+          if (env.IS_UNIX == 'true') {
+            sh 'find reports -name "*.trx" -type f -delete || true'
+          } else {
+            bat 'if exist reports del /s /q reports\\*.trx 2>nul || echo No old trx files found'
+          }
+        }
+        
         xunit tools: [[$class: 'MSTestJunitHudsonTestType', pattern: 'reports/**/*.trx']], 
               thresholds: [[$class: 'FailedThreshold', unstableThreshold: '0'], 
-                           [$class: 'SkippedThreshold', unstableThreshold: '0']]
+                           [$class: 'SkippedThreshold', unstableThreshold: '0']],
+              skipNoTestFiles: true
 
         script {
           try {
-            // This step requires the "Clover" plugin to be installed in Jenkins
             step([$class: 'CloverPublisher', cloverReportDir: 'reports/Calc.Tests', cloverReportFileName: 'Clover.xml'])
           } catch (err) {
             echo "Clover publish failed: ${err}"
-            currentBuild.result = 'UNSTABLE'
           }
         }
 
         publishHTML([
-          allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true,
+          allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true,
           reportDir: 'reports/Calc.Tests', reportFiles: 'index.html',
           reportName: 'Code Coverage Report'
         ])

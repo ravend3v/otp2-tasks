@@ -21,8 +21,6 @@ pipeline {
       }
     }
 
-    sh 'env | grep SONAR'
-
     stage('SonarQube Begin') {
       steps {
         dir("${env.PROJECT_DIR}") {
@@ -30,8 +28,8 @@ pipeline {
             try {
               withSonarQubeEnv('LocalSonarQube') {
                 def sonarBeginCmd = env.IS_UNIX == 'true' ?
-                  "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports/Calc.Tests/coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports/Calc.Tests/TestResults.trx\"" :
-                  "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.cs.opencover.reportsPaths=\"reports\\Calc.Tests\\coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports\\Calc.Tests\\TestResults.trx\""
+                  "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.login=\"\$SONAR_AUTH_TOKEN\" /d:sonar.host.url=\"\$SONAR_HOST_URL\" /d:sonar.cs.opencover.reportsPaths=\"reports/Calc.Tests/coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports/Calc.Tests/TestResults.trx\"" :
+                  "dotnet sonarscanner begin /k:\"${env.SONAR_PROJECT_KEY}\" /n:\"${env.SONAR_PROJECT_NAME}\" /d:sonar.login=\"%SONAR_AUTH_TOKEN%\" /d:sonar.host.url=\"%SONAR_HOST_URL%\" /d:sonar.cs.opencover.reportsPaths=\"reports\\Calc.Tests\\coverage.xml\" /d:sonar.cs.vstest.reportsPaths=\"reports\\Calc.Tests\\TestResults.trx\""
                 
                 if (env.IS_UNIX == 'true') {
                   sh "dotnet tool restore"
